@@ -103,6 +103,19 @@ If you use something else, please add it here for others.
 
 <details open=true> <summary> Windows </summary>
 
+<details> <summary> Node.js and pnpm (Frontend) </summary>
+
+1. Install [Node.js LTS](https://nodejs.org/en/download).
+  - Select latest LTS version of Node.js.
+  - Select pnpm.
+  - If you install it through other ways, don't forget to run `corepack enable pnpm`
+2. Navigate to `Jackett\src\Jackett.Common\Content`
+3. Open command line.
+3. Run `pnpm install --frozen-lockfile` to install all deps.
+5. Run `pnpm run build` to build the frontend.
+
+</details>
+
 <details open=true> <summary> Visual Studio 2022 </summary>
 
 - Install [Visual Studio Community 2022](https://visualstudio.microsoft.com/vs/) for free.
