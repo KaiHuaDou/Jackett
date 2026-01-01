@@ -8,6 +8,7 @@ variables:
   buildConfiguration: Release
   netCoreFramework: net9.0
   netCoreSdkVersion: 9.0.x
+  pnpm_config_cache: $(Pipeline.Workspace)/.pnpm-store
   # system.debug: true
 
 trigger:
@@ -124,6 +125,31 @@ stages:
               packageType: sdk
               version: $(netCoreSdkVersion)
               installationPath: $(Agent.ToolsDirectory)/dotnet
+
+          - task: NodeTool@0
+            displayName: "Install Node.js LTS"
+            inputs:
+              versionSpec: "lts/*"
+              checkLatest: true
+
+          - task: Cache@2
+            displayName: "Cache pnpm store"
+            inputs:
+              key: 'pnpm | "$(Agent.OS)" | pnpm-lock.yaml'
+              path: $(pnpm_config_cache)
+
+          - script: |
+              npm install --global corepack@latest
+              corepack enable
+              corepack prepare pnpm@latest-10 --activate
+              pnpm config set store-dir $(pnpm_config_cache)
+            displayName: "Setup pnpm"
+
+          - script: |
+              pnpm install --frozen-lockfile
+              pnpm run build
+            displayName: "Install dependencies and build"
+            workingDirectory: src/Jackett.Common/Content
 
           - task: DotNetCoreCLI@2
             displayName: Build DateTimeRoutines
