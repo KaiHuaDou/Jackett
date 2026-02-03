@@ -859,12 +859,12 @@ Example config for apache:
 Example config for Nginx:
 ```
 location /jackett {
-	proxy_pass http://127.0.0.1:9117;
-	proxy_set_header X-Real-IP $remote_addr;
-	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	proxy_set_header X-Forwarded-Proto $scheme;
-	proxy_set_header X-Forwarded-Host $http_host;
-	proxy_redirect off;
+    proxy_pass http://127.0.0.1:9117;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-Host $http_host;
+    proxy_redirect off;
 }
 ```
 
@@ -941,30 +941,59 @@ To use it, please just request a free API key on [OMDb](https://omdbapi.com/apik
 
 ### OSX
 
-
+1. Manually install OSX dotnet: `https://dotnet.microsoft.com/download?initial-os=macos`
+2. Install Node.js LTS and pnpm
 ```bash
-# manually install osx dotnet via:
-https://dotnet.microsoft.com/download?initial-os=macos
-# then:
-git clone https://github.com/Jackett/Jackett.git
+curl -o- https://fnm.vercel.app/install | bash
+fnm install 24
+corepack enable pnpm
+```
+3. Clone repo
+```bash
+git clone https://github.com/Jackett/Jackett.git --depth 1 --branch master
 cd Jackett/src
-
-# dotnet core version
+```
+4. Build
+```
+cd Jackett.Common/Content
+pnpm install
+pnpm run build
+cd ../..
 dotnet publish Jackett.Server -f net9.0 --self-contained -r osx-x64 -c Debug # takes care of everything
-./Jackett.Server/bin/Debug/net9.0/osx-x64/jackett # run jackett
+```
+5. Run
+```bash
+./Jackett.Server/bin/Debug/net9.0/osx-x64/jackett
 ```
 
 ### Linux
 
-
+1. Install build tools (Debian/Ubuntu)
 ```bash
-sudo apt install nuget msbuild dotnet-sdk-9.0 # install build tools (Debian/ubuntu)
-git clone https://github.com/Jackett/Jackett.git
+sudo apt install nuget msbuild dotnet-sdk-9.0
+```
+2. Install Node.js LTS and pnpm
+```bash
+curl -o- https://fnm.vercel.app/install | bash
+fnm install 24
+corepack enable pnpm
+```
+3. Clone repo
+```bash
+git clone https://github.com/Jackett/Jackett.git --depth 1 --branch master
 cd Jackett/src
-
-# dotnet core version
+```
+4. Build
+```
+cd Jackett.Common/Content
+pnpm install
+pnpm run build
+cd ../..
 dotnet publish Jackett.Server -f net9.0 --self-contained -r linux-x64 -c Debug # takes care of everything
-./Jackett.Server/bin/Debug/net9.0/linux-x64/jackett # run jackett
+```
+5. Run
+```bash
+./Jackett.Server/bin/Debug/net9.0/linux-x64/jackett
 ```
 
 ## Screenshots
